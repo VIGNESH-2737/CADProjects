@@ -1,0 +1,24 @@
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Guess the number:");
+        
+        int num = genRandom(0,100);
+        int input = scan.nextInt();
+        while(num != input){
+            if(input < num) System.out.println("Enter bigger Number");
+            else
+                System.out.println("Enter smaller Number");
+            input = scan.nextInt();
+        }
+        System.out.println("You have guess the answer: "+ input);
+    }
+    
+    public static int genRandom(int min, int max){
+        int range = Math.abs(max-min);
+        int num = (int)(Math.random() * range) + (min <= max ? min : max);
+        return num;
+    }
+}
