@@ -1,0 +1,105 @@
+import java.util.Scanner;
+class Main {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        //System.out.println("Try programiz.pro");
+        /*
+        [[-,-,-]
+         [-,-,-]
+         [-,-,-]]
+        
+        [[0,1,2]
+         [1,2,3]
+         [2,3,4]]
+        
+        [[2,1,0]
+         [3,2,1]
+         [4,3,2]]
+        */
+        System.out.println("Enter the board length: ");
+        int n = scan.nextInt();
+        
+        
+        char[][] tictac = new char[n][n];
+        boolean[][] check = new boolean[n][n];
+        
+       // static final char playerA = 'X';
+       // static final char playerB = 'O';
+        
+        boolean isPlayerA = true;
+        boolean isFinished = false;
+        boolean empty = false;
+        int[] crow = new int[n];
+        int[] ccol = new int[n];
+        int[] cleftUpRightDown = new int[2*n-1];//
+        int[] crightUpLeftDown = new int[2*n-1];//
+        int count = 0;
+        
+        while(!empty){
+            if(isPlayerA){
+                System.out.println("Player A mark X in tic tac toe, enter row and col");
+                int nrow = scan.nextInt();
+                int ncol = scan.nextInt();
+                
+                if(!check[nrow][ncol] && nrow >= 0 && nrow < n && ncol >= 0 && ncol < n){
+                    tictac[nrow][ncol] = 'X';
+                    check[nrow][ncol] = true;
+                    isPlayerA = false;
+                    count++;
+                    crow[nrow]++;
+                    ccol[ncol]++;
+                    cleftUpRightDown[nrow+ncol]++;
+                    crightUpLeftDown[2+(nrow-ncol)]++;
+                    
+                    isFinished = checkWinner(crow, ccol, cleftUpRightDown, crightUpLeftDown);
+                if(isFinished) {System.out.println("A is Winner."); return; }
+                }else{
+                    System.out.println("The chosen row and col is filled");
+                }
+            }
+            else{
+                 System.out.println("Player B mark O in tic tac toe, enter row and col");
+                int nrow = scan.nextInt();
+                int ncol = scan.nextInt();
+                if(!check[nrow][ncol] && nrow >= 0 && nrow < n && ncol >= 0 && ncol < n){
+                    tictac[nrow][ncol] = 'O';
+                    check[nrow][ncol] = true;
+                    isPlayerA = true;
+                    count++;
+                    crow[nrow]--;
+                    ccol[ncol]--;
+                    cleftUpRightDown[nrow+ncol]--;
+                    crightUpLeftDown[2+(nrow-ncol)]--;
+                    
+                    
+                    isFinished = checkWinner(crow, ccol, cleftUpRightDown, crightUpLeftDown);
+                    if(isFinished) {System.out.println("B is Winner."); return; }
+                }else{
+                    System.out.println("The chosen row and col is filled");
+                }
+            }
+           if(count == (n*n)) empty = true; 
+        }
+        
+        System.out.println("Draw");
+    }
+    
+    public static boolean checkWinner(int[] row, int[] col, int[] lower, int[] upper){
+        
+        for(int x: row){
+            if(x == 3 || x == -3) return true;
+        }
+        for(int x: col){
+            if(x == 3 || x == -3) return true;
+        }
+        for(int x: lower){
+            if(x == 3 || x == -3) return true;
+        }
+        for(int x: upper){
+            if(x == 3 || x == -3) return true;
+        }
+        
+        return false;
+        
+    }
+}
